@@ -1,7 +1,7 @@
 site_name: Gesture Game Controller
 site_description: Control a video game with hand gestures using embedded AI and Bluetooth
 site_author: Team — Arduino Days 2026 @ Semè City
-site_url: https://TON_USERNAME.github.io/gesture-game-controller/
+site_url: https://Keurtis08.github.io/Gesture-game-controller2/
 
 theme:
   name: material
