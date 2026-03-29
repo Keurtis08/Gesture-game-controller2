@@ -1,0 +1,63 @@
+site_name: Gesture Game Controller
+site_description: Control a video game with hand gestures using embedded AI and Bluetooth
+site_author: Team — Arduino Days 2026 @ Semè City
+site_url: https://TON_USERNAME.github.io/gesture-game-controller/
+
+theme:
+  name: material
+  language: en
+  palette:
+    - scheme: default
+      primary: deep purple
+      accent: teal
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: deep purple
+      accent: teal
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+  icon:
+    repo: fontawesome/brands/github
+
+repo_name: gesture-game-controller
+repo_url: https://github.com/TON_USERNAME/gesture-game-controller
+
+nav:
+  - Home: index.md
+  - Introduction: introduction.md
+  - Hardware:
+    - Components List: hardware/list.md
+    - Wiring Diagram: hardware/diagram.md
+  - Software:
+    - Arduino Code: software/arduino.md
+    - Python Script: software/python.md
+  - Tutorials:
+    - Overview: tutorials/index.md
+    - Install Arduino IDE: tutorials/arduino-ide.md
+    - Train the AI Model: tutorials/edge-impulse.md
+    - Run the Project: tutorials/run.md
+  - Gallery: gallery.md
+  - FAQ: faq.md
+  - About: about/index.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - attr_list
+  - md_in_html
+  - tables

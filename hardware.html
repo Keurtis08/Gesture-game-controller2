@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hardware — Gesture Game Controller</title>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">🎮 <span>Gesture</span>Controller</a>
+  <button class="hamburger"><span></span><span></span><span></span></button>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="introduction.html">Introduction</a></li>
+    <li><a href="hardware.html">Hardware</a></li>
+    <li><a href="software.html">Software</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+</nav>
+
+<section class="page-content">
+  <div class="container">
+
+    <h1 class="section-title">Hardware</h1>
+    <p class="section-sub">Components list and wiring diagram for the Gesture Game Controller.</p>
+
+    <h2>Components list</h2>
+
+    <table>
+      <thead>
+        <tr><th>Component</th><th>Qty</th><th>Role</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Arduino Nano 33 BLE Sense</strong></td><td>1</td><td>IMU sensor + AI model + BLE transmitter</td></tr>
+        <tr><td>USB cable (for Arduino)</td><td>1</td><td>Programming only (before the demo)</td></tr>
+        <tr><td>Powerbank</td><td>1</td><td>Wireless power supply during gameplay</td></tr>
+        <tr><td>PC with Bluetooth</td><td>1</td><td>Runs Python script and the game</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout success">
+      <div class="callout-icon">✅</div>
+      <div class="callout-body">
+        <strong>No extra bridge needed</strong>
+        <p>The Arduino Nano 33 BLE Sense has a <strong>built-in BLE 5.0 chip</strong>. Most modern laptops have a built-in Bluetooth adapter. They communicate directly — no additional hardware required between them.</p>
+      </div>
+    </div>
+
+    <h2>Arduino Nano 33 BLE Sense — specifications</h2>
+
+    <table>
+      <thead><tr><th>Specification</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Processor</td><td>ARM Cortex-M4 @ 64 MHz</td></tr>
+        <tr><td>RAM</td><td>256 KB</td></tr>
+        <tr><td>Flash</td><td>1 MB</td></tr>
+        <tr><td>Bluetooth</td><td>BLE 5.0 (built-in)</td></tr>
+        <tr><td>Accelerometer</td><td>±2g / ±4g / ±8g / ±16g</td></tr>
+        <tr><td>Gyroscope</td><td>±245 / ±500 / ±2000 dps</td></tr>
+        <tr><td>Power</td><td>5V via USB / powerbank</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Wiring diagram</h2>
+    <p>The setup is entirely wireless during gameplay. The only physical connection is the Arduino plugged into the powerbank.</p>
+
+    <div style="background:#1e1e2e;border-radius:12px;padding:2rem;color:#cdd6f4;font-family:monospace;font-size:0.9rem;line-height:2;margin:1.5rem 0;">
+      <pre style="background:transparent;padding:0;margin:0;box-shadow:none;border:none;"><code>┌─────────────────────────────────┐
+│   Arduino Nano 33 BLE Sense     │
+│                                 │
+│   [Built-in IMU LSM9DS1]        │
+│   [Edge Impulse AI Model]       │
+│   [Built-in BLE 5.0 chip]      │
+│                                 │
+│              │                  │
+│         USB cable               │
+│              │                  │
+│          Powerbank              │
+│       (power supply)            │
+└─────────────────────────────────┘
+            ↕ Bluetooth BLE (wireless)
+┌─────────────────────────────────┐
+│             PC                  │
+│   [Built-in Bluetooth]          │
+│   Python script (bleak+pynput)  │
+│   Game — Beach Buggy Racing     │
+└─────────────────────────────────┘</code></pre>
+    </div>
+
+    <h2>Connection summary</h2>
+    <table>
+      <thead><tr><th>From</th><th>To</th><th>Type</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>Arduino</td><td>Powerbank</td><td>USB cable</td><td>Power supply</td></tr>
+        <tr><td>Arduino</td><td>PC</td><td>Bluetooth BLE (wireless)</td><td>Gesture data</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Software requirements</h2>
+    <table>
+      <thead><tr><th>Software</th><th>Version</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>Arduino IDE</td><td>2.x</td><td>Upload the sketch to the Arduino</td></tr>
+        <tr><td>Python</td><td>3.8+</td><td>Run the gesture-to-key script</td></tr>
+        <tr><td>Edge Impulse Studio</td><td>Online</td><td>Train and export the AI model</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Python libraries</h3>
+    <pre><code>pip install bleak pynput</code></pre>
+
+    <h3>Arduino libraries (via Library Manager)</h3>
+    <ul>
+      <li><code>ArduinoBLE</code> — handles Bluetooth BLE communication</li>
+      <li><code>Arduino_LSM9DS1</code> — reads the built-in IMU sensor</li>
+      <li>Your exported Edge Impulse model (.zip file)</li>
+    </ul>
+
+    <div style="display:flex;gap:1rem;margin-top:2.5rem;flex-wrap:wrap;">
+      <a class="btn btn-primary" href="software.html">Software →</a>
+      <a class="btn btn-outline" style="color:var(--purple);border-color:var(--purple);" href="introduction.html">← Introduction</a>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p>Built with ❤️ at <strong>Arduino Days 2026 @ Semè City</strong> 🇧🇯 &nbsp;|&nbsp; MIT License</p>
+</footer>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

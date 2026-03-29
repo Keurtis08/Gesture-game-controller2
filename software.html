@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Software — Gesture Game Controller</title>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">🎮 <span>Gesture</span>Controller</a>
+  <button class="hamburger"><span></span><span></span><span></span></button>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="introduction.html">Introduction</a></li>
+    <li><a href="hardware.html">Hardware</a></li>
+    <li><a href="software.html">Software</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+</nav>
+
+<section class="page-content">
+  <div class="container">
+
+    <h1 class="section-title">Software</h1>
+    <p class="section-sub">The Arduino sketch and the Python script that power the system.</p>
+
+    <!-- TAB SWITCHER -->
+    <div style="display:flex;gap:8px;margin:2rem 0 1rem;">
+      <button onclick="showTab('arduino')" id="tab-arduino"
+        style="padding:10px 24px;border-radius:8px;border:2px solid var(--purple);background:var(--purple);color:#fff;font-weight:700;cursor:pointer;font-size:0.9rem;">
+        🔵 Arduino Code
+      </button>
+      <button onclick="showTab('python')" id="tab-python"
+        style="padding:10px 24px;border-radius:8px;border:2px solid var(--purple);background:transparent;color:var(--purple);font-weight:700;cursor:pointer;font-size:0.9rem;">
+        🐍 Python Script
+      </button>
+    </div>
+
+    <!-- ARDUINO TAB -->
+    <div id="tab-content-arduino">
+
+      <h2>Arduino Sketch — Nano 33 BLE Sense</h2>
+      <p>This code runs on the Arduino. It reads the IMU sensor, classifies the gesture with the Edge Impulse AI model, and sends the label wirelessly via BLE.</p>
+
+      <pre><code>/*
+ * Gesture Game Controller — Arduino Nano 33 BLE Sense
+ * Arduino Days 2026 @ Semè City
+ *
+ * Reads hand movement from the built-in IMU,
+ * classifies the gesture using Edge Impulse AI,
+ * and broadcasts the result via Bluetooth BLE.
+ */
+
+#include &lt;ArduinoBLE.h&gt;
+#include &lt;Arduino_LSM9DS1.h&gt;
+// #include &lt;your_model_inferencing.h&gt;  ← replace with your EI model
+
+#define BLE_DEVICE_NAME       "GestureController"
+#define CONFIDENCE_THRESHOLD   0.70
+
+BLEService gestureService("180C");
+BLEStringCharacteristic gestureChar("2A56", BLERead | BLENotify, 10);
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(LED_BUILTIN, OUTPUT);
+
+  if (!IMU.begin()) { Serial.println("IMU error!"); while (1); }
+  if (!BLE.begin())  { Serial.println("BLE error!");  while (1); }
+
+  BLE.setLocalName(BLE_DEVICE_NAME);
+  BLE.setAdvertisedService(gestureService);
+  gestureService.addCharacteristic(gestureChar);
+  BLE.addService(gestureService);
+  BLE.advertise();
+
+  Serial.println("Arduino ready — advertising as: GestureController");
+}
+
+void loop() {
+  BLEDevice central = BLE.central();
+
+  if (central) {
+    Serial.print("PC connected: ");
+    Serial.println(central.address());
+    digitalWrite(LED_BUILTIN, HIGH);  // LED ON = connected
+
+    while (central.connected()) {
+      float ax, ay, az;
+      if (IMU.accelerationAvailable()) {
+        IMU.readAcceleration(ax, ay, az);
+
+        // Replace this with your Edge Impulse inference call
+        String gesture = classifyGesture(ax, ay, az);
+
+        if (gesture != "") {
+          gestureChar.writeValue(gesture);
+          Serial.print("Gesture sent: ");
+          Serial.println(gesture);
+          // Flash LED on gesture
+          digitalWrite(LED_BUILTIN, LOW);
+          delay(80);
+          digitalWrite(LED_BUILTIN, HIGH);
+        }
+      }
+      delay(50);
+    }
+    digitalWrite(LED_BUILTIN, LOW);
+    Serial.println("PC disconnected.");
+  }
+}
+
+// Simplified tilt detection — replace with Edge Impulse model
+String classifyGesture(float ax, float ay, float az) {
+  if (ay &gt;  0.6) return "UP";
+  if (ay &lt; -0.6) return "DOWN";
+  if (ax &lt; -0.6) return "LEFT";
+  if (ax &gt;  0.6) return "RIGHT";
+  return "";
+}</code></pre>
+
+      <h3>Key concepts</h3>
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon purple">📛</div>
+          <h3>BLE device name</h3>
+          <p><code>GestureController</code> is the name the Arduino broadcasts. The Python script searches for exactly this name. Both must match.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon teal">🔔</div>
+          <h3>BLENotify</h3>
+          <p>The PC is automatically notified every time a new gesture is written — no need to constantly poll for updates.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon orange">💡</div>
+          <h3>LED feedback</h3>
+          <p>LED stays ON while the PC is connected. It flashes briefly each time a gesture is successfully detected.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PYTHON TAB -->
+    <div id="tab-content-python" style="display:none;">
+
+      <h2>Python Script</h2>
+      <p>This script runs on the PC. It connects to the Arduino via Bluetooth BLE, receives gesture labels wirelessly, and simulates the matching arrow key press.</p>
+
+      <pre><code>"""
+Gesture Game Controller — Python Script
+Arduino Days 2026 @ Semè City
+
+Connects to Arduino via Bluetooth BLE,
+receives gesture labels, simulates arrow key presses.
+"""
+
+import asyncio
+from bleak import BleakScanner, BleakClient
+from pynput.keyboard import Key, Controller
+
+# Must match the Arduino BLE device name exactly
+BLE_DEVICE_NAME   = "GestureController"
+GESTURE_CHAR_UUID = "00002a56-0000-1000-8000-00805f9b34fb"
+
+GESTURE_MAP = {
+    "UP":    Key.up,
+    "DOWN":  Key.down,
+    "LEFT":  Key.left,
+    "RIGHT": Key.right,
+}
+
+keyboard = Controller()
+
+def simulate_key(gesture: str):
+    """Press and release the arrow key matching the gesture."""
+    key = GESTURE_MAP.get(gesture.strip())
+    if key:
+        keyboard.press(key)
+        asyncio.get_event_loop().call_later(0.05, keyboard.release, key)
+        print(f"Key pressed: {gesture} → {key}")
+
+def on_gesture_received(sender, data: bytearray):
+    """Called automatically every time the Arduino sends a gesture."""
+    gesture = data.decode("utf-8").strip()
+    if gesture in GESTURE_MAP:
+        simulate_key(gesture)
+
+async def main():
+    print(f"Scanning for '{BLE_DEVICE_NAME}' via Bluetooth...")
+    device = await BleakScanner.find_device_by_name(BLE_DEVICE_NAME)
+    if device is None:
+        print("ERROR: Arduino not found.")
+        print("Make sure the Arduino is powered on and Bluetooth is ON.")
+        return
+
+    print(f"Found! Connecting to {device.address}...")
+    async with BleakClient(device) as client:
+        print("Connected! Waiting for gestures...\n")
+        await client.start_notify(GESTURE_CHAR_UUID, on_gesture_received)
+        while client.is_connected:
+            await asyncio.sleep(0.1)
+
+if __name__ == "__main__":
+    asyncio.run(main())</code></pre>
+
+      <h3>How to run</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h3>Install dependencies</h3>
+            <pre><code>pip install bleak pynput</code></pre>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h3>Enable Bluetooth on your PC</h3>
+            <p>Make sure Bluetooth is turned ON in your PC settings before running the script.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h3>Power on the Arduino</h3>
+            <p>Plug the Arduino into the powerbank. The LED lights up when the PC connects.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <h3>Run the script</h3>
+            <pre><code>python gesture_controller.py</code></pre>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <h3>Open the game and play!</h3>
+            <p>Open any arrow-key game (Beach Buggy Racing, etc.) and move your hand. 🎮</p>
+          </div>
+        </div>
+      </div>
+
+      <h3>Gesture-to-key mapping</h3>
+      <table>
+        <thead><tr><th>BLE message</th><th>Simulated key</th><th>Game action</th></tr></thead>
+        <tbody>
+          <tr><td><code>UP</code></td><td>⬆ Arrow Up</td><td>Accelerate</td></tr>
+          <tr><td><code>DOWN</code></td><td>⬇ Arrow Down</td><td>Brake</td></tr>
+          <tr><td><code>LEFT</code></td><td>⬅ Arrow Left</td><td>Turn left</td></tr>
+          <tr><td><code>RIGHT</code></td><td>➡ Arrow Right</td><td>Turn right</td></tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    <div style="display:flex;gap:1rem;margin-top:2.5rem;flex-wrap:wrap;">
+      <a class="btn btn-primary" href="gallery.html">Gallery →</a>
+      <a class="btn btn-outline" style="color:var(--purple);border-color:var(--purple);" href="hardware.html">← Hardware</a>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p>Built with ❤️ at <strong>Arduino Days 2026 @ Semè City</strong> 🇧🇯 &nbsp;|&nbsp; MIT License</p>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script>
+function showTab(name) {
+  ['arduino','python'].forEach(t => {
+    document.getElementById('tab-content-' + t).style.display = (t === name) ? 'block' : 'none';
+    const btn = document.getElementById('tab-' + t);
+    if (t === name) {
+      btn.style.background = 'var(--purple)';
+      btn.style.color = '#fff';
+    } else {
+      btn.style.background = 'transparent';
+      btn.style.color = 'var(--purple)';
+    }
+  });
+}
+</script>
+</body>
+</html>

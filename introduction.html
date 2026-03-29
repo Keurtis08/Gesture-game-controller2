@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Introduction — Gesture Game Controller</title>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">🎮 <span>Gesture</span>Controller</a>
+  <button class="hamburger"><span></span><span></span><span></span></button>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="introduction.html">Introduction</a></li>
+    <li><a href="hardware.html">Hardware</a></li>
+    <li><a href="software.html">Software</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+</nav>
+
+<section class="page-content">
+  <div class="container">
+
+    <h1 class="section-title">Introduction</h1>
+    <p class="section-sub">Understanding the project — the problem, the solution, and the technology behind it.</p>
+
+    <h2>The problem</h2>
+    <p>Video games have always relied on keyboards or controllers for input. It works, but it is not natural for the human body.</p>
+    <p><strong>What if you could play just by moving your hand?</strong></p>
+    <p>That was the challenge presented at <strong>Arduino Days 2026 at Semè City</strong>: build an interface between the human body and a video game using embedded artificial intelligence.</p>
+
+    <h2>Our solution</h2>
+    <p>We designed a two-part system that works together in real time:</p>
+
+    <h3>1. Movement capture &amp; wireless transmission — Arduino Nano 33 BLE Sense</h3>
+    <p>The Arduino Nano 33 BLE Sense carries a built-in <strong>IMU</strong> (Inertial Measurement Unit) that continuously measures:</p>
+    <ul>
+      <li><strong>Accelerometer</strong>: detects orientation and changes in speed across 3 axes</li>
+      <li><strong>Gyroscope</strong>: measures the rotation of the hand across 3 axes</li>
+    </ul>
+    <p>These raw sensor values are fed into an <strong>AI model trained on Edge Impulse</strong>, which classifies the hand position into one of 4 gestures. The Arduino is powered by a <strong>powerbank</strong> — completely wireless — and broadcasts the detected gesture over <strong>Bluetooth Low Energy (BLE)</strong>.</p>
+
+    <h3>2. Keyboard simulation — Python Script</h3>
+    <p>A Python script runs on the PC. It connects to the Arduino via the PC's built-in Bluetooth, receives gesture labels wirelessly, and simulates the matching arrow key press using <code>pynput</code>. The game receives those key presses exactly as if they came from a real keyboard — <strong>no modification to the game required</strong>.</p>
+
+    <div class="callout tip">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body">
+        <strong>What is embedded AI (TinyML)?</strong>
+        <p>Unlike AI running on a remote server, embedded AI runs <strong>directly on the Arduino chip</strong> — no internet needed. Gesture recognition happens in milliseconds, with no network latency, on a tiny powerbank.</p>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">ℹ️</div>
+      <div class="callout-body">
+        <strong>What is Edge Impulse?</strong>
+        <p><a href="https://edgeimpulse.com" target="_blank">Edge Impulse</a> is the free platform we used to train our model. It lets you collect IMU sensor data, train a neural network, and export it directly as an Arduino library.</p>
+      </div>
+    </div>
+
+    <div class="callout success">
+      <div class="callout-icon">📡</div>
+      <div class="callout-body">
+        <strong>What is Bluetooth Low Energy (BLE)?</strong>
+        <p>BLE is a wireless protocol designed for low power. The Arduino Nano 33 BLE Sense has BLE built in, and most modern PCs have a BLE-compatible Bluetooth adapter — no extra hardware needed.</p>
+      </div>
+    </div>
+
+    <h2>System architecture</h2>
+    <div class="pipeline">
+      <div class="pipe-step">🖐️ Hand moves<small>Physical gesture</small></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">🔵 Arduino IMU<small>Sensor data</small></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">🤖 AI Model<small>Edge Impulse</small></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">📡 BLE<small>Wireless</small></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">🐍 Python<small>bleak + pynput</small></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">🎮 Game<small>Arrow key</small></div>
+    </div>
+
+    <div style="display:flex;gap:1rem;margin-top:2.5rem;flex-wrap:wrap;">
+      <a class="btn btn-primary" href="hardware.html">Hardware →</a>
+      <a class="btn btn-outline" style="color:var(--purple);border-color:var(--purple);" href="index.html">← Back to Home</a>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p>Built with ❤️ at <strong>Arduino Days 2026 @ Semè City</strong> 🇧🇯 &nbsp;|&nbsp; MIT License</p>
+</footer>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

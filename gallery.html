@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gallery — Gesture Game Controller</title>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">🎮 <span>Gesture</span>Controller</a>
+  <button class="hamburger"><span></span><span></span><span></span></button>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="introduction.html">Introduction</a></li>
+    <li><a href="hardware.html">Hardware</a></li>
+    <li><a href="software.html">Software</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+</nav>
+
+<section class="page-content">
+  <div class="container">
+
+    <h1 class="section-title">Project Gallery</h1>
+    <p class="section-sub">The Gesture Game Controller in action during Arduino Days 2026 at Semè City. The Python script (left) logs every gesture in real time — Beach Buggy Racing (right) reacts instantly.</p>
+
+    <div class="callout info">
+      <div class="callout-icon">🖱️</div>
+      <div class="callout-body">
+        <strong>Click any photo to enlarge it.</strong>
+        <p>All photos were taken during the live demo session at Semè City on March 29, 2026.</p>
+      </div>
+    </div>
+
+    <div class="gallery">
+
+      <div class="gallery-item">
+        <img src="images/demo-1.jpg" alt="Python script controlling Beach Buggy Racing — demo 1"/>
+        <p>▶ Python terminal showing UP / DOWN / LEFT / RIGHT commands being sent to the game in real time.</p>
+      </div>
+
+      <div class="gallery-item">
+        <img src="images/demo-2.jpg" alt="Python script and Beach Buggy Racing — demo 2"/>
+        <p>▶ Close-up of the terminal output. Timestamps confirm the low-latency response of the system.</p>
+      </div>
+
+      <div class="gallery-item">
+        <img src="images/demo-3.jpg" alt="Buggy turning in Beach Buggy Racing — demo 3"/>
+        <p>▶ The buggy steers left or right as the corresponding gesture is detected — no keyboard involved.</p>
+      </div>
+
+      <div class="gallery-item">
+        <img src="images/demo-4.jpg" alt="Full test sequence running — demo 4"/>
+        <p>▶ A full test sequence: acceleration (UP), braking (DOWN), left turn, right turn — all from hand movement.</p>
+      </div>
+
+      <div class="gallery-item">
+        <img src="images/demo-5.jpg" alt="Complete pipeline working end-to-end — demo 5"/>
+        <p>▶ The complete pipeline end-to-end: gesture detected → Python receives it → Beach Buggy Racing responds.</p>
+      </div>
+
+    </div>
+
+    <h2>What the terminal output means</h2>
+    <table>
+      <thead><tr><th>Terminal message</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td><code>Enfoncé : HAUT (Accélération) pendant 3.0s</code></td><td>UP gesture → Arrow Up pressed for 3 s</td></tr>
+        <tr><td><code>Enfoncé : BAS (Freinage) pendant 4.0s</code></td><td>DOWN gesture → Arrow Down pressed for 4 s</td></tr>
+        <tr><td><code>Enfoncé : GAUCHE (Virage) pendant 2.0s</code></td><td>LEFT gesture → Arrow Left pressed for 2 s</td></tr>
+        <tr><td><code>Enfoncé : DROITE (Virage) pendant 2.0s</code></td><td>RIGHT gesture → Arrow Right pressed for 2 s</td></tr>
+        <tr><td><code>Relâché. Attente de 1.0s...</code></td><td>Key released, waiting 1 s before next gesture</td></tr>
+      </tbody>
+    </table>
+
+    <div style="display:flex;gap:1rem;margin-top:2.5rem;flex-wrap:wrap;">
+      <a class="btn btn-primary" href="about.html">About →</a>
+      <a class="btn btn-outline" style="color:var(--purple);border-color:var(--purple);" href="software.html">← Software</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" aria-label="Close">✕</button>
+  <img src="" alt="Enlarged photo"/>
+</div>
+
+<footer>
+  <p>Built with ❤️ at <strong>Arduino Days 2026 @ Semè City</strong> 🇧🇯 &nbsp;|&nbsp; MIT License</p>
+</footer>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

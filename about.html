@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About — Gesture Game Controller</title>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">🎮 <span>Gesture</span>Controller</a>
+  <button class="hamburger"><span></span><span></span><span></span></button>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="introduction.html">Introduction</a></li>
+    <li><a href="hardware.html">Hardware</a></li>
+    <li><a href="software.html">Software</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+</nav>
+
+<section class="page-content">
+  <div class="container">
+
+    <h1 class="section-title">About</h1>
+    <p class="section-sub">The project, the team, and the technologies behind it.</p>
+
+    <h2>The project</h2>
+    <p><strong>Gesture Game Controller</strong> was built during <strong>Arduino Days 2026</strong> at <strong>Semè City, Bénin</strong>. The challenge was to create an innovative interface between the human body and a video game, using embedded artificial intelligence running directly on a microcontroller.</p>
+
+    <div class="callout tip">
+      <div class="callout-icon">🎯</div>
+      <div class="callout-body">
+        <strong>Challenge objective</strong>
+        <p>Build a gesture-based game controller using an Arduino Nano 33 BLE Sense, an Edge Impulse AI model, and a Python script — without modifying the game itself.</p>
+      </div>
+    </div>
+
+    <h2>System architecture</h2>
+    <div class="pipeline">
+      <div class="pipe-step">🖐️ Hand gesture<small>Physical input</small></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">🔵 Arduino<small>IMU + AI + BLE</small></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">📡 Bluetooth<small>Wireless</small></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">🐍 Python<small>bleak + pynput</small></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">🎮 Game<small>No modification</small></div>
+    </div>
+
+    <h2>Technologies used</h2>
+    <table>
+      <thead><tr><th>Technology</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Arduino Nano 33 BLE Sense</strong></td><td>Microcontroller with built-in IMU + BLE 5.0</td></tr>
+        <tr><td><strong>Edge Impulse</strong></td><td>TinyML model training and deployment</td></tr>
+        <tr><td><strong>Bluetooth Low Energy (BLE)</strong></td><td>Wireless gesture transmission</td></tr>
+        <tr><td><strong>Python — bleak</strong></td><td>BLE reception on the PC</td></tr>
+        <tr><td><strong>Python — pynput</strong></td><td>Keyboard simulation</td></tr>
+        <tr><td><strong>Beach Buggy Racing</strong></td><td>Target game for the demo</td></tr>
+      </tbody>
+    </table>
+
+    <h2>About Semè City</h2>
+    <p><a href="https://semecity.bj" target="_blank">Semè City</a> is an innovation and creativity hub in Bénin dedicated to developing African talent in digital technology, design, and entrepreneurship. Arduino Days 2026 was hosted at Semè City as part of the global Arduino Days celebration.</p>
+
+    <h2>License</h2>
+    <div class="callout success">
+      <div class="callout-icon">📄</div>
+      <div class="callout-body">
+        <strong>MIT License</strong>
+        <p>This project is free to use, modify, and share. Copyright 2026 — Arduino Days @ Semè City.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p>Built with ❤️ at <strong>Arduino Days 2026 @ Semè City</strong> 🇧🇯 &nbsp;|&nbsp; MIT License</p>
+</footer>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

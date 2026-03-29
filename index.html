@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gesture Game Controller — Arduino Days 2026</title>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">🎮 <span>Gesture</span>Controller</a>
+  <button class="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="introduction.html">Introduction</a></li>
+    <li><a href="hardware.html">Hardware</a></li>
+    <li><a href="software.html">Software</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <h1>Control your game<br><span>with your hand</span></h1>
+    <p>No keyboard. No mouse. Just move your hand and play — powered by embedded AI on Arduino.</p>
+    <div class="hero-badges">
+      <span class="badge">🤖 Edge Impulse AI</span>
+      <span class="badge">📡 Bluetooth BLE</span>
+      <span class="badge">🐍 Python</span>
+      <span class="badge">⚡ Arduino Nano 33 BLE Sense</span>
+      <span class="badge">🇧🇯 Arduino Days 2026 @ Semè City</span>
+    </div>
+    <a class="btn btn-primary" href="introduction.html">Get started</a>
+    <a class="btn btn-outline" href="gallery.html">See it in action</a>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="page-content">
+  <div class="container">
+
+    <h2 class="section-title">How it works</h2>
+    <p class="section-sub">Three components working together in real time to turn hand movements into game inputs.</p>
+
+    <div class="pipeline">
+      <div class="pipe-step">🖐️ Hand move<small>You tilt your hand</small></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">🔵 Arduino<small>IMU + AI model</small></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">📡 Bluetooth BLE<small>Wireless signal</small></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">🐍 Python<small>Receives gesture</small></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">🎮 Game<small>Arrow key pressed</small></div>
+    </div>
+
+    <!-- 3 CARDS -->
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon purple">🔵</div>
+        <h3>Arduino Nano 33 BLE Sense</h3>
+        <p>The brain. Its built-in IMU sensor captures hand movement. An Edge Impulse AI model classifies the gesture in milliseconds and broadcasts it via Bluetooth BLE. Powered by a powerbank — fully wireless.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon teal">📡</div>
+        <h3>Bluetooth BLE</h3>
+        <p>The Arduino connects directly to the PC's built-in Bluetooth. No extra hardware needed. The gesture label (UP, DOWN, LEFT, RIGHT) is transmitted wirelessly in real time.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon orange">🐍</div>
+        <h3>Python Script</h3>
+        <p>Running on the PC, it receives gesture labels via BLE using <code>bleak</code> and simulates the matching arrow key press with <code>pynput</code>. The game receives it like a real keyboard.</p>
+      </div>
+    </div>
+
+    <!-- GESTURE TABLE -->
+    <h2>The 4 recognized gestures</h2>
+    <table>
+      <thead>
+        <tr><th>Hand movement</th><th>Gesture label</th><th>Simulated key</th><th>In-game action</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Tilt forward</td><td><code>UP</code></td><td>⬆ Arrow Up</td><td>Accelerate</td></tr>
+        <tr><td>Tilt backward</td><td><code>DOWN</code></td><td>⬇ Arrow Down</td><td>Brake</td></tr>
+        <tr><td>Tilt left</td><td><code>LEFT</code></td><td>⬅ Arrow Left</td><td>Turn left</td></tr>
+        <tr><td>Tilt right</td><td><code>RIGHT</code></td><td>➡ Arrow Right</td><td>Turn right</td></tr>
+      </tbody>
+    </table>
+
+    <!-- DEMO PHOTO -->
+    <h2>See it in action</h2>
+    <div style="border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.12);margin:1.5rem 0;">
+      <img src="images/demo-1.jpg" alt="Gesture Game Controller controlling Beach Buggy Racing" style="width:100%;display:block;"/>
+    </div>
+    <p style="color:#6b7280;font-size:0.9rem;text-align:center;">The Python script (left) logs every gesture in real time. Beach Buggy Racing (right) reacts instantly — no keyboard touched.</p>
+
+    <div style="text-align:center;margin-top:2.5rem;">
+      <a class="btn btn-primary" href="gallery.html">View full gallery →</a>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p>Built with ❤️ at <strong>Arduino Days 2026 @ Semè City</strong> 🇧🇯 &nbsp;|&nbsp; MIT License</p>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
